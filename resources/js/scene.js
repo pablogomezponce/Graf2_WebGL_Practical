@@ -123,15 +123,23 @@ function createEarthMaterial() {
     var earthMaterial = new THREE.MeshPhongMaterial();
     earthMaterial.map = earthTexture;
 
+    var normalTexture = new THREE.Texture();
+
     loader.load('assets/earth_normalmap_flat2k.jpg', function (image) {
-        earthMaterial.normalMap = image;
+        normalTexture.image = image;
+        normalTexture.needsUpdate = true;
     });
+    earthMaterial.normalMap = normalTexture;
     earthMaterial.normalScale = new THREE.Vector2(1.0,1.0);
 
+
+    var specTexture = new THREE.Texture();
     loader.load('assets/lee_spec.jpg', function (image) {
         earthMaterial.specularMap = image;
+        normalTexture.needsUpdate = true;
     });
-    earthMaterial.normalScale = new THREE.Color(0x262626);
+    earthMaterial.specularMap = specTexture;
+    earthMaterial.specular = new THREE.Color(0x262626);
 
     return earthMaterial;
 }
