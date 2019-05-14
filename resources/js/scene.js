@@ -1,8 +1,10 @@
 var renderer;
 var scene;
+var model;
 var camera;
 
 var cameraControl;
+
 
 function createRenderer() {
     renderer = new THREE.WebGLRenderer();
@@ -27,27 +29,29 @@ function createCamera(){
 
 function init() {
     scene = new THREE.Scene();
+    
     createCamera();
     createRenderer();
 
-    createBox();
-    createPlane();
-    createEarth(createEarthMaterial(),1,'earth');
-    createEarth(createFairClouds(),1.01,'clouds');
+   // createBox();
+    //createPlane();
+   // createEarth(createEarthMaterial(),1,'earth');
+    //createEarth(createFairClouds(),1.01,'clouds');
     createLight();
     createEnviroment();
-
+    
+    createHead();   
     document.body.appendChild(renderer.domElement);
-
+    
     render();
 }
 
 function render() {
     renderer.render(scene,camera);
 
-cameraControl.update();
-    scene.getObjectByName('earth').rotation.y += 0.005;
-    scene.getObjectByName('clouds').rotation.y += 0.01;
+    cameraControl.update();
+    //scene.getObjectByName('earth').rotation.y += 0.005;
+    //scene.getObjectByName('clouds').rotation.y += 0.01;
     
     requestAnimationFrame(render);
 }
@@ -81,7 +85,7 @@ function createPlane() {
 
 function createLight() {
     var spotLight = new THREE.SpotLight(0xffffff);
-    spotLight.position.set(10,20,20);
+    spotLight.position.set(100,10,-50);
     spotLight.shadow.camera.near = 20;
         spotLight.shadow.camera.far = 50;
     spotLight.castShadow = true;
@@ -108,6 +112,25 @@ function createFairClouds() {
     fairCloudsMaterial.transparent = true;
     fairCloudsMaterial.map = cloudsTexture;
     return fairCloudsMaterial;
+}
+
+function createHead(){
+    var material = new THREE.MeshPhongMaterial();
+
+    var loader = new THREE.OBJLoader();
+
+    loader.load('assets/lee.obj', function (object) {
+        
+        object.traverse(function (child) {
+            if (child instanceof THREE.Mesh) {
+                child.material = material;
+                child.receiveShadow = true;
+                child.castShadow = true; 
+                child.name = "model";
+            }
+        });
+        scene.add(object);
+    });
 }
 
 function createEarthMaterial() {
@@ -165,3 +188,21 @@ function createEnviroment() {
 
 init();
 
+
+//IT MUST BE USED ONLY ONE TIME!!! THAT'S WHY IT APPEARS HERE, just one time!!
+window.addEventListener("keydown", function(e) {
+    console.log(model);
+    model = scene.getObjectByName("model");
+    if ( model != null) {
+        switch (e.key) {
+            case 'a':
+                model.position.x += 1;
+                break;
+            case 'd':
+                model.position.x -= 1;
+                break;
+            //default:
+            //  break;
+        }    
+    }
+});
