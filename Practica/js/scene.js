@@ -19,9 +19,9 @@ function createCamera(){
         window.innerWidth / window.innerHeight,
         0.1, 1000);
         
-    camera.position.x = 90;
-    camera.position.y = 32;
-    camera.position.z = 32;
+    camera.position.x = 0.00046926030096069483;
+    camera.position.y = 469.3340579543901;
+    camera.position.z = 0;
     camera.lookAt(scene.position);
     
     cameraControl = new THREE.OrbitControls(camera);
@@ -32,15 +32,12 @@ function init() {
     
     createCamera();
     createRenderer();
+    
+    createPlane();
 
-   // createBox();
-    //createPlane();
-   // createEarth(createEarthMaterial(),1,'earth');
-    //createEarth(createFairClouds(),1.01,'clouds');
     createLight();
     createEnviroment();
     
-    createHead();   
     document.body.appendChild(renderer.domElement);
     
     render();
@@ -49,10 +46,7 @@ function init() {
 function render() {
     renderer.render(scene,camera);
 
-    cameraControl.update();
-    //scene.getObjectByName('earth').rotation.y += 0.005;
-    //scene.getObjectByName('clouds').rotation.y += 0.01;
-    
+    cameraControl.update();    
     requestAnimationFrame(render);
 }
 
@@ -71,12 +65,14 @@ function createBox() {
 
 
 function createPlane() {
-    var planeGeometry = new THREE.PlaneGeometry(20,20);
+    var planeGeometry = new THREE.PlaneGeometry(200,200);
     var planeMaterial = new THREE.MeshLambertMaterial({
-        color: 0xcccccc
+        color: 0xFF0011,
     });
 
+    
     var plane = new THREE.Mesh(planeGeometry, planeMaterial);
+    plane.material.side= THREE.DoubleSide;
     plane.receiveShadow = true;
     plane.rotation.x = -0.5 * Math.PI;
     plane.position.y = -2;
@@ -101,19 +97,7 @@ function createLight() {
     scene.add(ambientLight);
 }
 
-function createFairClouds() {
-    var cloudsTexture = new THREE.Texture();
-    var loader = new THREE.ImageLoader();
-    loader.load('assets/fair_clouds_1k.png', function (image){
-        cloudsTexture.image = image;
-        cloudsTexture.needsUpdate = true;
-    });
-    var fairCloudsMaterial = new THREE.MeshBasicMaterial();
-    fairCloudsMaterial.transparent = true;
-    fairCloudsMaterial.map = cloudsTexture;
-    return fairCloudsMaterial;
-}
-
+/*
 function createHead(){
     var material = new THREE.MeshPhongMaterial();
 
@@ -132,8 +116,8 @@ function createHead(){
         scene.add(object);
     });
 }
-
-function createEarthMaterial() {
+*/
+/* function createEarthMaterial() {
     var earthTexture = new THREE.Texture();
     var loader = new THREE.ImageLoader();
     loader.load('assets/earthmap2k.jpg', function (image) {
@@ -166,20 +150,13 @@ function createEarthMaterial() {
 
     return earthMaterial;
 }
-
-function createEarth(material,scale,name) {
-    var sphereGeometry = new THREE.SphereGeometry(15* scale,30 * scale,30 * scale);
-    var sphereMaterial = material;
-    var earthMesh = new THREE.Mesh(sphereGeometry, sphereMaterial);
-    earthMesh.name = name;
-    scene.add(earthMesh);
-}
+ */
 
 function createEnviroment() {
-    var envGeometry = new THREE.SphereGeometry(90,32,32);
+    var envGeometry = new THREE.SphereGeometry(300,32,32);
 
     var envMaterial = new THREE.MeshBasicMaterial();
-    envMaterial.map = THREE.ImageUtils.loadTexture('assets/galaxy_starfield.png');
+    envMaterial.map = THREE.ImageUtils.loadTexture('assets/Skybox/lava_texture_by_twister10_d1fy457.jpg');
     envMaterial.side = THREE.BackSide;
 
     var mesh = new THREE.Mesh(envGeometry, envMaterial);
@@ -188,7 +165,7 @@ function createEnviroment() {
 
 init();
 
-
+/* 
 //IT MUST BE USED ONLY ONE TIME!!! THAT'S WHY IT APPEARS HERE, just one time!!
 window.addEventListener("keydown", function(e) {
     console.log(model);
@@ -205,4 +182,4 @@ window.addEventListener("keydown", function(e) {
             //  break;
         }    
     }
-});
+}); */
