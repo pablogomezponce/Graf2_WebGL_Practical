@@ -5,6 +5,10 @@ var camera;
 
 var cameraControl;
 
+// new vars for gameplay:
+var player = "x" // its value will be 'x' or 'o' (first player is 'x')
+var map = []
+
 
 function createRenderer() {
     renderer = new THREE.WebGLRenderer();

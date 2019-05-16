@@ -5,7 +5,6 @@ var camera;
 
 var cameraControl;
 
-
 function createRenderer() {
     renderer = new THREE.WebGLRenderer();
     renderer.setClearColor(0x000000,1.0);
@@ -40,14 +39,32 @@ function init() {
     
     document.body.appendChild(renderer.domElement);
     
+    // function from gameMechanics.js in order to prepare the gameplay
+    gameVarsInit();
+    chivatoBoard();
+
     render();
 }
 
 function render() {
+    // ------------------------------ MECHANICS --------------------------------//
+    if (nextTurnAble && !noTokenLeft) {
+        nextTurn();
+        gameover = isBoardFull();
+        chivatoBoard(); // CHIVATO.................... ***
+        nextTurnAble = !nextTurnAble;
+
+        if (gameover) {
+            checkWinner();
+            console.log("GAMEOVER. Press 'R' to restart!");
+        }
+    }
+
+    // ------------------------------ RENDERING --------------------------------//
     renderer.render(scene,camera);
 
     cameraControl.update();    
-    requestAnimationFrame(render);
+    requestAnimationFrame(render);  
 }
 
 //GEOMETRY!
@@ -165,21 +182,48 @@ function createEnviroment() {
 
 init();
 
-/* 
+/* _______________________________________________________________________________________ */
+
 //IT MUST BE USED ONLY ONE TIME!!! THAT'S WHY IT APPEARS HERE, just one time!!
 window.addEventListener("keydown", function(e) {
     console.log(model);
     model = scene.getObjectByName("model");
-    if ( model != null) {
+    //if ( model != null) {
         switch (e.key) {
             case 'a':
-                model.position.x += 1;
+                //model.position.x += 1;    // esto estaba antes
+                player.moveToken(-1,0);
                 break;
+
             case 'd':
-                model.position.x -= 1;
+                player.moveToken(+1,0);
+                //model.position.x -= 1;    // esto estaba antes
                 break;
-            //default:
-            //  break;
+
+            case 'w':
+                player.moveToken(0,-1);
+                //model.position.x += 1;    // esto estaba antes
+                break;
+
+            case 's':
+                player.moveToken(0,+1);
+                break;
+
+            case 'r':
+                if (gameover) restartGame();
+                break;
+
+            case 'Enter':
+                console.log("Enter pressed!");
+                nextTurnAble = checkTokens();
+                break;
+
+            default:
+                console.log("Unknown keycode!");
+                break;
         }    
-    }
-}); */
+    //}
+    chivatoFull();
+
+});
+/* _______________________________________________________________________________________ */
