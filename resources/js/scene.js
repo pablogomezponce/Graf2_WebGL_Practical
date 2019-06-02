@@ -3,6 +3,8 @@ var scene;
 var model;
 var camera;
 
+var turnM
+
 var cameraControl;
 
 function createRenderer() {
@@ -27,6 +29,7 @@ function createCamera(){
 }
 
 function init() {
+    turn = 1;
     scene = new THREE.Scene();
     
     createCamera();
@@ -56,7 +59,7 @@ function render() {
 
         if (gameover) {
             checkWinner();
-            console.log("GAMEOVER. Press 'R' to restart!");
+            alert("GAMEOVER. Press 'R' to restart!");
         }
     }
 
@@ -82,7 +85,7 @@ function createBox() {
 
 
 function createPlane() {
-    var planeGeometry = new THREE.PlaneGeometry(200,200);
+    var planeGeometry = new THREE.PlaneGeometry(250,250);
     var planeMaterial = new THREE.MeshLambertMaterial({
         color: 0xFF0011,
     });
@@ -186,40 +189,71 @@ init();
 
 //IT MUST BE USED ONLY ONE TIME!!! THAT'S WHY IT APPEARS HERE, just one time!!
 window.addEventListener("keydown", function(e) {
-    console.log(model);
-    model = scene.getObjectByName("model");
+    gameAssetLoader.deleteObject(turn);
     //if ( model != null) {
         switch (e.key) {
             case 'a':
-                //model.position.x += 1;    // esto estaba antes
                 player.moveToken(-1,0);
+                if(board[player.row][player.col] == '+'){
+                    gameAssetLoader.loadObject(player.col, player.row,player.value,turn);
+                } else {
+                    gameAssetLoader.loadObject(player.col, player.row,"busy",turn);
+                }
                 break;
 
             case 'd':
                 player.moveToken(+1,0);
+                if(board[player.row][player.col] == '+'){
+                    gameAssetLoader.loadObject(player.col, player.row,player.value,turn);
+                } else {
+                    gameAssetLoader.loadObject(player.col, player.row,"busy",turn);
+                }
                 //model.position.x -= 1;    // esto estaba antes
                 break;
 
             case 'w':
                 player.moveToken(0,-1);
+                if(board[player.row][player.col] == '+'){
+                    gameAssetLoader.loadObject(player.col, player.row,player.value,turn);
+                } else {
+                    gameAssetLoader.loadObject(player.col, player.row,"busy",turn);
+                }
                 //model.position.x += 1;    // esto estaba antes
                 break;
 
             case 's':
                 player.moveToken(0,+1);
+                if(board[player.row][player.col] == '+'){
+                    gameAssetLoader.loadObject(player.col, player.row,player.value,turn);
+                } else {
+                    gameAssetLoader.loadObject(player.col, player.row,"busy",turn);
+                }
+
                 break;
 
             case 'r':
                 if (gameover) restartGame();
+                if(board[player.row][player.col] == '+'){
+                    gameAssetLoader.loadObject(player.col, player.row,player.value,turn);
+                } else {
+                    gameAssetLoader.loadObject(player.col, player.row,"busy",turn);
+                }
+ 
                 break;
 
             case 'Enter':
-                console.log("Enter pressed!");
                 nextTurnAble = checkTokens();
+                if (nextTurnAble) {
+                    gameAssetLoader.loadObject(player.col, player.row,player.value,turn);
+                    
+                    turn += 1;
+                }
                 break;
-
+            
+                case ' ':
+                        gameAssetLoader.deleteObject(turn - 1);
+                break;
             default:
-                console.log("Unknown keycode!");
                 break;
         }    
     //}

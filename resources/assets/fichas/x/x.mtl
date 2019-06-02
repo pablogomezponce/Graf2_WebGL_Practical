@@ -1,0 +1,118 @@
+# 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
+# File Created: 21.05.2019 12:39:11
+
+newmtl gun_selection_holder
+	Ns 50.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 0.8000 0.8000 0.8000
+	Ks 0.2000 0.2000 0.2000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka gun_selection_holder_DiffuseColor_Composite.tga
+	map_Kd gun_selection_holder_DiffuseColor_Composite.tga
+
+newmtl 3rd___rocket
+	Ns 50.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 0.8000 0.8000 0.8000
+	Ks 0.2000 0.2000 0.2000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka 3rd___rocket_DiffuseColor_Composite.tga
+	map_Kd 3rd___rocket_DiffuseColor_Composite.tga
+	map_bump -bm 0.5000 3rd___rocket_Bump_Composite.tga
+
+newmtl 1st_rocket
+	Ns 50.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 0.8000 0.8000 0.8000
+	Ks 0.2000 0.2000 0.2000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka 1st_rocket_DiffuseColor_Composite.tga
+	map_Kd 1st_rocket_DiffuseColor_Composite.tga
+	map_bump -bm 0.5000 1st_rocket_Bump_Composite.tga
+
+newmtl left_machie_gun
+	Ns 50.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 0.8000 0.8000 0.8000
+	Ks 0.2000 0.2000 0.2000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka left_machie_gun_DiffuseColor_Composite.tga
+	map_Kd left_machie_gun_DiffuseColor_Composite.tga
+	map_bump -bm 0.5000 left_machie_gun_Bump_Composite.tga
+
+newmtl cross_body
+	Ns 50.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 0.8000 0.8000 0.8000
+	Ks 0.2000 0.2000 0.2000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka cross_body_DiffuseColor_Composite.tga
+	map_Kd cross_body_DiffuseColor_Composite.tga
+
+newmtl triger_base
+	Ns 50.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 0.8000 0.8000 0.8000
+	Ks 0.2000 0.2000 0.2000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka triger_base_DiffuseColor_Composite.tga
+	map_Kd triger_base_DiffuseColor_Composite.tga
+
+newmtl trigger
+	Ns 50.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 0.8000 0.8000 0.8000
+	Ks 0.2000 0.2000 0.2000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka trigger_DiffuseColor_Composite.tga
+	map_Kd trigger_DiffuseColor_Composite.tga
+
+newmtl red_dot
+	Ns 50.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 0.5102 0.0000 0.0000
+	Ks 0.1040 0.1040 0.1040
+	Ke 0.0000 0.0000 0.0000
+	map_Ka red_dot_DiffuseColor_Composite.tga
+	map_Kd red_dot_DiffuseColor_Composite.tga
+	map_refl Map__1_Reflect_Refract.tga

@@ -4,6 +4,7 @@ var board;  // 3x3 board of the game
 var nextTurnAble; // in order to manage turns in main loop
 var noTokenLeft; // boolean that indicates if the board is full
 
+var winner; // winner var (values = 'o' / 'x')
 var gameover;   // when board is full
 
 function gameVarsInit() {
@@ -31,7 +32,6 @@ function nextTurn() {
 }
 
 function checkTokens() {
-    console.log("Checking token: ("+player.col+","+player.row+");");
     
     if (board[player.row][player.col] != "+") {
         alert("There's already a token there! Pick other place.");
@@ -64,11 +64,59 @@ function isBoardFull() {
     return true;
 }
 
+function isWinner() {
+    x = 'x,x,x';
+    o = 'o,o,o';
+
+    // we check horizontal stripes - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    for (h = 0; h < board.length; h++) {
+        if (board[h].toString() == x) {
+            winner = 'x';
+            break;
+        }
+        else if (board[h].toString() == o) {
+            winner = 'o';
+            break;
+        }
+    }
+
+    // we check if either we already have a winner or we gotta check the vertical stripes - - - -
+    if (winner != undefined) {
+        return true;
+    } else {
+        for (v = 0; v < board[0].length; v++) {
+            if ([board[0][v], board[1][v], board[2][v]].toString() == x) {
+                winner = 'x';
+                break;
+            }
+            else if ([board[0][v], board[1][v], board[2][v]].toString() == o) {
+                winner = 'o';
+                break;
+            }
+        }
+    }
+
+    // for last, we check for diagonal stripes - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (winner != undefined) {
+        return true;
+    } else {
+        opt1 = [board[0][0], board[1][1], board[2][2]].toString();
+        opt2 = [board[0][2], board[1][1], board[2][0]].toString();
+        if (x == opt1 || x == opt2) {
+            winner = 'x';
+        } else if (o == opt1 || o == opt2) {
+            winner = 'o';
+        }
+
+        if (winner != undefined) return true;
+    }
+
+    return false;
+}
+
 function chivatoBoard() {
-    console.log(board);
 }
 function chivatoToken() {
-    console.log(player);
 }
 function chivatoFull() {
     chivatoToken();
