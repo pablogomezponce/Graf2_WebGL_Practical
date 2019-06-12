@@ -21,6 +21,7 @@ function gameVarsInit() {
     board[0] = ['+', '+', '+'];
     board[1] = ['+', '+', '+'];
     board[2] = ['+', '+', '+'];
+    winner = '+';
 
     gameover = false;
 }
@@ -50,11 +51,6 @@ function restartGame() {
 
 }
 
-function checkWinner() {
-    // todo comprobar aqui el ganador de la partida.
-
-}
-
 function isBoardFull() {
     for (row = 0; row < board.length; row++) {
         for (col = 0; col < board[row].length; col++) {
@@ -64,60 +60,59 @@ function isBoardFull() {
     return true;
 }
 
-function isWinner() {
+function checkWinner() {
     x = 'x,x,x';
     o = 'o,o,o';
 
-    // we check horizontal stripes - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    for (h = 0; h < board.length; h++) {
-        if (board[h].toString() == x) {
-            winner = 'x';
-            break;
-        }
-        else if (board[h].toString() == o) {
-            winner = 'o';
-            break;
-        }
-    }
-
-    // we check if either we already have a winner or we gotta check the vertical stripes - - - -
-    if (winner != undefined) {
-        return true;
-    } else {
-        for (v = 0; v < board[0].length; v++) {
-            if ([board[0][v], board[1][v], board[2][v]].toString() == x) {
+    if (winner == '+') {
+        // we check horizontal stripes - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        for (h = 0; h < board.length; h++) {
+            if (board[h].toString() == x) {
                 winner = 'x';
                 break;
             }
-            else if ([board[0][v], board[1][v], board[2][v]].toString() == o) {
+            else if (board[h].toString() == o) {
                 winner = 'o';
                 break;
             }
         }
-    }
 
-    // for last, we check for diagonal stripes - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (winner != undefined) {
-        return true;
-    } else {
-        opt1 = [board[0][0], board[1][1], board[2][2]].toString();
-        opt2 = [board[0][2], board[1][1], board[2][0]].toString();
-        if (x == opt1 || x == opt2) {
-            winner = 'x';
-        } else if (o == opt1 || o == opt2) {
-            winner = 'o';
+        // we check if either we already have a winner or we gotta check the vertical stripes - - - -
+        if (winner == '+') {
+            for (v = 0; v < board[0].length; v++) {
+                if ([board[0][v], board[1][v], board[2][v]].toString() == x) {
+                    winner = 'x';
+                    break;
+                }
+                else if ([board[0][v], board[1][v], board[2][v]].toString() == o) {
+                    winner = 'o';
+                    break;
+                }
+            }
+
+            if (winner == '+') {
+                // for last, we check for diagonal stripes - - - - - - - - - - - - - - - - - - - - - - - -
+                opt1 = [board[0][0], board[1][1], board[2][2]].toString();
+                opt2 = [board[0][2], board[1][1], board[2][0]].toString();
+                if (x == opt1 || x == opt2) {
+                    winner = 'x';
+                } else if (o == opt1 || o == opt2) {
+                    winner = 'o';
+                }
+            }
         }
-
-        if (winner != undefined) return true;
     }
-
-    return false;
 }
+
 
 function chivatoBoard() {
+
 }
+
 function chivatoToken() {
+
 }
+
 function chivatoFull() {
     chivatoToken();
     chivatoBoard();

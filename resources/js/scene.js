@@ -57,8 +57,25 @@ function render() {
         chivatoBoard(); // CHIVATO.................... ***
         nextTurnAble = !nextTurnAble;
 
+        checkWinner();
         if (gameover) {
-            checkWinner();
+            $("canvas").remove();
+            switch (winner) {
+                case '+':
+                    $("body").append('<img src="assets/Results/draw.png" alt="Empate" >');
+                    break;
+                case 'o':
+                        $("body").append('<img src="assets/Results/o_wins.png" alt="Empate" >');
+
+                    break;
+                case 'x':
+                    $("body").append('<img src="assets/Results/+_wins.png" alt="Empate" >');
+
+                    break;
+                default:
+                    
+                    break;
+            }
             alert("GAMEOVER. Press 'R' to restart!");
         }
     }
@@ -116,61 +133,6 @@ function createLight() {
     var ambientLight = new THREE.AmbientLight(0x111111);
     scene.add(ambientLight);
 }
-
-/*
-function createHead(){
-    var material = new THREE.MeshPhongMaterial();
-
-    var loader = new THREE.OBJLoader();
-
-    loader.load('assets/lee.obj', function (object) {
-        
-        object.traverse(function (child) {
-            if (child instanceof THREE.Mesh) {
-                child.material = material;
-                child.receiveShadow = true;
-                child.castShadow = true; 
-                child.name = "model";
-            }
-        });
-        scene.add(object);
-    });
-}
-*/
-/* function createEarthMaterial() {
-    var earthTexture = new THREE.Texture();
-    var loader = new THREE.ImageLoader();
-    loader.load('assets/earthmap2k.jpg', function (image) {
-        earthTexture.image = image;
-        earthTexture.needsUpdate = true;
-    });
-
-
-
-    var earthMaterial = new THREE.MeshPhongMaterial();
-    earthMaterial.map = earthTexture;
-
-    var normalTexture = new THREE.Texture();
-
-    loader.load('assets/earth_normalmap_flat2k.jpg', function (image) {
-        normalTexture.image = image;
-        normalTexture.needsUpdate = true;
-    });
-    earthMaterial.normalMap = normalTexture;
-    earthMaterial.normalScale = new THREE.Vector2(1.0,1.0);
-
-
-    var specTexture = new THREE.Texture();
-    loader.load('assets/lee_spec.jpg', function (image) {
-        earthMaterial.specularMap = image;
-        normalTexture.needsUpdate = true;
-    });
-    earthMaterial.specularMap = specTexture;
-    earthMaterial.specular = new THREE.Color(0x262626);
-
-    return earthMaterial;
-}
- */
 
 function createEnviroment() {
     var envGeometry = new THREE.SphereGeometry(300,32,32);
@@ -232,13 +194,7 @@ window.addEventListener("keydown", function(e) {
                 break;
 
             case 'r':
-                if (gameover) restartGame();
-                if(board[player.row][player.col] == '+'){
-                    gameAssetLoader.loadObject(player.col, player.row,player.value,turn);
-                } else {
-                    gameAssetLoader.loadObject(player.col, player.row,"busy",turn);
-                }
- 
+               this.location.reload();
                 break;
 
             case 'Enter':
