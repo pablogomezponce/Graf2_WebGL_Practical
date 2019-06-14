@@ -7,12 +7,18 @@ var noTokenLeft; // boolean that indicates if the board is full
 var winner; // winner var (values = 'o' / 'x')
 var gameover;   // when board is full
 
+var audioPlayer;    // audio player -acceso al objeto del html-
+var commandsIcon;   // imagen de commands del html
+var audioIcon;    // audio icon -objeto del html, para cambiarlo cuando muteemos el audio y tal-
+var isMusicPlaying; // boolean in order to manage music playing
+
 function gameVarsInit() {
     player = {
         'value' : "o", //the first player is 'x' (in the turn function, we'll always switch players)
         'col' : 1,    // player token's position (center of the board initially)
         'row' : 1,
         'moveToken' : function(goCol, goRow) { // goCol = 'x', goRow = 'y'
+            gameAssetLoader.deleteObject(turn);
             this.col += (this.col + goCol < 0 || this.col + goCol > 2)? 0 : goCol;
             this.row += (this.row + goRow < 0 || this.row + goRow > 2)? 0 : goRow;
         }
@@ -22,14 +28,34 @@ function gameVarsInit() {
     board[1] = ['+', '+', '+'];
     board[2] = ['+', '+', '+'];
     winner = '+';
+    
+    audioPlayer = $("#music")[0];
+    
+    commandsIcon = document.createElement("img");
+    commandsIcon.src = "../assets/img/commands.png";
+    commandsIcon.style = "height:50%;position:absolute;left:25px;top:50px;";
+    document.body.appendChild(commandsIcon);
 
+    audioIcon = document.createElement("img");
+    audioIcon.src = "../assets/img/audio_init.png";
+    audioIcon.style = "height:15%;position:absolute;right:25px;bottom:50px;";
+    document.body.appendChild(audioIcon);
+
+    isMusicPlaying = false;
     gameover = false;
+
 }
 
 function nextTurn() {
     player.value = (player.value == 'x')? 'o' : 'x';
     player.col = 1;
     player.row = 1;
+
+    if(board[player.row][player.col] == '+'){
+        gameAssetLoader.loadObject(player.col, player.row,player.value,turn);
+    } else {
+        gameAssetLoader.loadObject(player.col, player.row,"busy",turn);
+    }
 }
 
 function checkTokens() {

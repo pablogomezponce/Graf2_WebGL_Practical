@@ -29,6 +29,7 @@ function createCamera(){
 }
 
 function init() {
+
     turn = 1;
     scene = new THREE.Scene();
     
@@ -46,12 +47,16 @@ function init() {
     gameVarsInit();
     chivatoBoard();
 
+    // we load the first token and start the game (main loop)
+    gameAssetLoader.loadObject(player.col, player.row,player.value,turn);
     render();
 }
 
 function render() {
     // ------------------------------ MECHANICS --------------------------------//
+
     if (nextTurnAble && !noTokenLeft) {
+
         nextTurn();
         gameover = isBoardFull();
         chivatoBoard(); // CHIVATO.................... ***
@@ -59,17 +64,19 @@ function render() {
 
         checkWinner();
         if (gameover) {
+            // quitamos las imagenes y el canvas
+            commandsIcon.remove();
+            audioIcon.remove();
             $("canvas").remove();
             switch (winner) {
                 case '+':
-                    $("body").append('<img src="assets/Results/draw.png" alt="Empate" >');
+                    $("body").append('<img alt="draw" src="assets/Results/draw.png">');
                     break;
                 case 'o':
-                        $("body").append('<img src="assets/Results/o_wins.png" alt="Empate" >');
-
-                    break;
+                    $("body").append('<img alt="draw" src="assets/Results/o_wins.png">');
+                        break;
                 case 'x':
-                    $("body").append('<img src="assets/Results/+_wins.png" alt="Empate" >');
+                    $("body").append('<img alt="draw" src="assets/Results/+_wins.png">');
 
                     break;
                 default:
@@ -80,6 +87,7 @@ function render() {
         }
     }
 
+    
     // ------------------------------ RENDERING --------------------------------//
     renderer.render(scene,camera);
 
@@ -151,7 +159,6 @@ init();
 
 //IT MUST BE USED ONLY ONE TIME!!! THAT'S WHY IT APPEARS HERE, just one time!!
 window.addEventListener("keydown", function(e) {
-    gameAssetLoader.deleteObject(turn);
     //if ( model != null) {
         switch (e.key) {
             case 'a':
@@ -194,7 +201,7 @@ window.addEventListener("keydown", function(e) {
                 break;
 
             case 'r':
-               this.location.reload();
+                this.location.reload();
                 break;
 
             case 'Enter':
@@ -203,12 +210,37 @@ window.addEventListener("keydown", function(e) {
                     gameAssetLoader.loadObject(player.col, player.row,player.value,turn);
                     
                     turn += 1;
+                } else {
+                    gameAssetLoader.loadObject(player.col, player.row,"busy",turn);
                 }
                 break;
             
-                case ' ':
-                        gameAssetLoader.deleteObject(turn - 1);
+            case ' ':
+                gameAssetLoader.deleteObject(turn - 1);
                 break;
+
+            case 'm':
+                if (!isMusicPlaying) {
+                    audioPlayer.play();
+                    audioIcon.src = "../assets/img/audio_on.png";
+                    isMusicPlaying = true;
+                } else {
+                    audioPlayer.pause();
+                    audioIcon.src = "../assets/img/audio_paused.png";
+                    isMusicPlaying = false;
+                }
+                break;
+
+            case 'p':
+                if (isMusicPlaying) {
+                    audioPlayer.pause();
+                }
+                audioIcon.src = "../assets/img/audio_init.png";
+                audioPlayer.currentTime = 0;
+                isMusicPlaying = false;
+                
+                break;
+
             default:
                 break;
         }    
