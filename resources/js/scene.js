@@ -70,14 +70,19 @@ function render() {
             $("canvas").remove();
             switch (winner) {
                 case '+':
-                    $("body").append('<img alt="draw" src="assets/Results/draw.png">');
+                    document.body.style.background = "#000000 url(assets/img/draw.png) no-repeat center center";
+                    document.body.style.backgroundAttachment = "fixed";
+                    document.body.style.backgroundSize = "cover";
                     break;
                 case 'o':
-                    $("body").append('<img alt="draw" src="assets/Results/o_wins.png">');
-                        break;
+                    document.body.style.background = "#000000 url(assets/img/o_wins.png) no-repeat center center";
+                    document.body.style.backgroundAttachment = "fixed";
+                    document.body.style.backgroundSize = "cover";
+                    break;
                 case 'x':
-                    $("body").append('<img alt="draw" src="assets/Results/+_wins.png">');
-
+                    document.body.style.background = "#000000 url(assets/img/+_wins.png) no-repeat center center";
+                    document.body.style.backgroundAttachment = "fixed";
+                    document.body.style.backgroundSize = "cover";
                     break;
                 default:
                     
@@ -211,7 +216,9 @@ window.addEventListener("keydown", function(e) {
                     gameAssetLoader.loadObject(player.col, player.row,player.value,turn);
                     
                     turn += 1;
-                }
+                }/* else {
+                    gameAssetLoader.loadObject(player.col, player.row,"busy",turn);
+                }*/
                 break;
             
             case ' ':
