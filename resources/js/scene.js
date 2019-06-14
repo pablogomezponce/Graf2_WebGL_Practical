@@ -159,6 +159,7 @@ init();
 
 //IT MUST BE USED ONLY ONE TIME!!! THAT'S WHY IT APPEARS HERE, just one time!!
 window.addEventListener("keydown", function(e) {
+
     //if ( model != null) {
         switch (e.key) {
             case 'a':
@@ -210,8 +211,6 @@ window.addEventListener("keydown", function(e) {
                     gameAssetLoader.loadObject(player.col, player.row,player.value,turn);
                     
                     turn += 1;
-                } else {
-                    gameAssetLoader.loadObject(player.col, player.row,"busy",turn);
                 }
                 break;
             
