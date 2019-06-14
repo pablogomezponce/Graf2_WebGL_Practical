@@ -70,24 +70,26 @@ function render() {
             $("canvas").remove();
             switch (winner) {
                 case '+':
-                    document.body.style.background = "#000000 url(assets/img/draw.png) no-repeat center center";
-                    document.body.style.backgroundAttachment = "fixed";
-                    document.body.style.backgroundSize = "cover";
+                    document.body.style.backgroundImage = "url(../assets/Results/draw.png)";
+                    
                     break;
                 case 'o':
-                    document.body.style.background = "#000000 url(assets/img/o_wins.png) no-repeat center center";
-                    document.body.style.backgroundAttachment = "fixed";
-                    document.body.style.backgroundSize = "cover";
+                    document.body.style.backgroundImage = "url(../assets/Results/o_wins.png)";
+
                     break;
                 case 'x':
-                    document.body.style.background = "#000000 url(assets/img/+_wins.png) no-repeat center center";
-                    document.body.style.backgroundAttachment = "fixed";
-                    document.body.style.backgroundSize = "cover";
+                    document.body.style.backgroundImage = "url(../assets/Results/+_wins.png)";
+
                     break;
                 default:
                     
                     break;
             }
+            document.body.style.backgroundRepeat = "no-repeat";
+            document.body.style.backgroundPosition =  "center center";
+            document.body.style.backgroundAttachment = "fixed";
+            document.body.style.backgroundSize = "cover";
+
             alert("GAMEOVER. Press 'R' to restart!");
         }
     }
