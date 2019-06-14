@@ -1,16 +1,16 @@
-Graf2_WebGL_Practical
+# Graf2_WebGL_Practical
 
-GRUPO:
+# GRUPO:
  - Pablo Gómez
  - Joel López
 
-JUEGO:
+# JUEGO:
 Nuestra entrega consiste en un 3 en raya infernal. Un duelo de apoteósicas dimensiones
 y extremadamente considerables repercusiones. Sobre todo en la nota final de Síntesis de
 Imágenes.
 Lo demás da igual.
 
-MECÁNICAS:
+# MECÁNICAS:
 Las mecanicas, como se ven en la ventana de juego, son las que siguen:
 -> WASD para mover la ficha entre las diferentes posiciones (si la ficha/token se vuelve
 	una esfera significa que la casilla está ocupada, y si se intenta colocar una ficha
@@ -21,7 +21,7 @@ Las mecanicas, como se ven en la ventana de juego, son las que siguen:
 -> Cuando no queden más posibles casillas en el tablero de juego, se dirá el resultado de
 	la partida y se mostrará la correspondiente imagen
 	
-A TENER EN CUENTA:
+# A TENER EN CUENTA
 -> Las fichas de cruz tardan más en cargar, cuidado con esto: no pulsar repetidamente WASD
 	hasta que la ficha se haya cargado en la nueva posicion (si pulsamos muy -muy- rápido
 	podría no dar tiempo a borrar la anterior ficha y empezaríamos a "arrastrarla")
@@ -29,4 +29,5 @@ A TENER EN CUENTA:
 
 -> ¡RECOMENDAMOS PONER EL NAVEGADOR EN PANTALLA COMPLETA (F11 para alternar entre pantalla
 	completa y normal)!
-¡GRACIAS, Y BUENA SUERTE EN LA PARTIDA!
+
+**¡GRACIAS, Y BUENA SUERTE EN LA PARTIDA!**
