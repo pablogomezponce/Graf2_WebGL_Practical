@@ -3,8 +3,9 @@ var scene;
 var model;
 var camera;
 
-var cameraControl;
+var turnM
 
+var cameraControl;
 
 function createRenderer() {
     renderer = new THREE.WebGLRenderer();
@@ -19,41 +20,86 @@ function createCamera(){
         window.innerWidth / window.innerHeight,
         0.1, 1000);
         
-    camera.position.x = 90;
-    camera.position.y = 32;
-    camera.position.z = 32;
+    camera.position.x = 0.00046926030096069483;
+    camera.position.y = 469.3340579543901;
+    camera.position.z = 0;
     camera.lookAt(scene.position);
     
     cameraControl = new THREE.OrbitControls(camera);
 }
 
 function init() {
+
+    turn = 1;
     scene = new THREE.Scene();
     
     createCamera();
     createRenderer();
+    
+    createPlane();
 
-   // createBox();
-    //createPlane();
-   // createEarth(createEarthMaterial(),1,'earth');
-    //createEarth(createFairClouds(),1.01,'clouds');
     createLight();
     createEnviroment();
     
-    createHead();   
     document.body.appendChild(renderer.domElement);
     
+    // function from gameMechanics.js in order to prepare the gameplay
+    gameVarsInit();
+    chivatoBoard();
+
+    // we load the first token and start the game (main loop)
+    gameAssetLoader.loadObject(player.col, player.row,player.value,turn);
     render();
 }
 
 function render() {
+    // ------------------------------ MECHANICS --------------------------------//
+
+    if (nextTurnAble && !noTokenLeft) {
+
+        nextTurn();
+        gameover = isBoardFull();
+        chivatoBoard(); // CHIVATO.................... ***
+        nextTurnAble = !nextTurnAble;
+
+        checkWinner();
+        if (gameover) {
+            // quitamos las imagenes y el canvas
+            commandsIcon.remove();
+            audioIcon.remove();
+            $("canvas").remove();
+            switch (winner) {
+                case '+':
+                    document.body.style.backgroundImage = "url(../assets/Results/draw.png)";
+                    
+                    break;
+                case 'o':
+                    document.body.style.backgroundImage = "url(../assets/Results/o_wins.png)";
+
+                    break;
+                case 'x':
+                    document.body.style.backgroundImage = "url(../assets/Results/+_wins.png)";
+
+                    break;
+                default:
+                    
+                    break;
+            }
+            document.body.style.backgroundRepeat = "no-repeat";
+            document.body.style.backgroundPosition =  "center center";
+            document.body.style.backgroundAttachment = "fixed";
+            document.body.style.backgroundSize = "cover";
+
+            alert("GAMEOVER. Press 'R' to restart!");
+        }
+    }
+
+    
+    // ------------------------------ RENDERING --------------------------------//
     renderer.render(scene,camera);
 
-    cameraControl.update();
-    //scene.getObjectByName('earth').rotation.y += 0.005;
-    //scene.getObjectByName('clouds').rotation.y += 0.01;
-    
-    requestAnimationFrame(render);
+    cameraControl.update();    
+    requestAnimationFrame(render);  
 }
 
 //GEOMETRY!
@@ -71,12 +117,14 @@ function createBox() {
 
 
 function createPlane() {
-    var planeGeometry = new THREE.PlaneGeometry(20,20);
+    var planeGeometry = new THREE.PlaneGeometry(250,250);
     var planeMaterial = new THREE.MeshLambertMaterial({
-        color: 0xcccccc
+        color: 0xFF0011,
     });
 
+    
     var plane = new THREE.Mesh(planeGeometry, planeMaterial);
+    plane.material.side= THREE.DoubleSide;
     plane.receiveShadow = true;
     plane.rotation.x = -0.5 * Math.PI;
     plane.position.y = -2;
@@ -101,85 +149,11 @@ function createLight() {
     scene.add(ambientLight);
 }
 
-function createFairClouds() {
-    var cloudsTexture = new THREE.Texture();
-    var loader = new THREE.ImageLoader();
-    loader.load('assets/fair_clouds_1k.png', function (image){
-        cloudsTexture.image = image;
-        cloudsTexture.needsUpdate = true;
-    });
-    var fairCloudsMaterial = new THREE.MeshBasicMaterial();
-    fairCloudsMaterial.transparent = true;
-    fairCloudsMaterial.map = cloudsTexture;
-    return fairCloudsMaterial;
-}
-
-function createHead(){
-    var material = new THREE.MeshPhongMaterial();
-
-    var loader = new THREE.OBJLoader();
-
-    loader.load('assets/lee.obj', function (object) {
-        
-        object.traverse(function (child) {
-            if (child instanceof THREE.Mesh) {
-                child.material = material;
-                child.receiveShadow = true;
-                child.castShadow = true; 
-                child.name = "model";
-            }
-        });
-        scene.add(object);
-    });
-}
-
-function createEarthMaterial() {
-    var earthTexture = new THREE.Texture();
-    var loader = new THREE.ImageLoader();
-    loader.load('assets/earthmap2k.jpg', function (image) {
-        earthTexture.image = image;
-        earthTexture.needsUpdate = true;
-    });
-
-
-
-    var earthMaterial = new THREE.MeshPhongMaterial();
-    earthMaterial.map = earthTexture;
-
-    var normalTexture = new THREE.Texture();
-
-    loader.load('assets/earth_normalmap_flat2k.jpg', function (image) {
-        normalTexture.image = image;
-        normalTexture.needsUpdate = true;
-    });
-    earthMaterial.normalMap = normalTexture;
-    earthMaterial.normalScale = new THREE.Vector2(1.0,1.0);
-
-
-    var specTexture = new THREE.Texture();
-    loader.load('assets/lee_spec.jpg', function (image) {
-        earthMaterial.specularMap = image;
-        normalTexture.needsUpdate = true;
-    });
-    earthMaterial.specularMap = specTexture;
-    earthMaterial.specular = new THREE.Color(0x262626);
-
-    return earthMaterial;
-}
-
-function createEarth(material,scale,name) {
-    var sphereGeometry = new THREE.SphereGeometry(15* scale,30 * scale,30 * scale);
-    var sphereMaterial = material;
-    var earthMesh = new THREE.Mesh(sphereGeometry, sphereMaterial);
-    earthMesh.name = name;
-    scene.add(earthMesh);
-}
-
 function createEnviroment() {
-    var envGeometry = new THREE.SphereGeometry(90,32,32);
+    var envGeometry = new THREE.SphereGeometry(300,32,32);
 
     var envMaterial = new THREE.MeshBasicMaterial();
-    envMaterial.map = THREE.ImageUtils.loadTexture('assets/galaxy_starfield.png');
+    envMaterial.map = THREE.ImageUtils.loadTexture('assets/Skybox/lava_texture_by_twister10_d1fy457.jpg');
     envMaterial.side = THREE.BackSide;
 
     var mesh = new THREE.Mesh(envGeometry, envMaterial);
@@ -188,21 +162,98 @@ function createEnviroment() {
 
 init();
 
+/* _______________________________________________________________________________________ */
 
 //IT MUST BE USED ONLY ONE TIME!!! THAT'S WHY IT APPEARS HERE, just one time!!
 window.addEventListener("keydown", function(e) {
-    console.log(model);
-    model = scene.getObjectByName("model");
-    if ( model != null) {
+
+    //if ( model != null) {
         switch (e.key) {
             case 'a':
-                model.position.x += 1;
+                player.moveToken(-1,0);
+                if(board[player.row][player.col] == '+'){
+                    gameAssetLoader.loadObject(player.col, player.row,player.value,turn);
+                } else {
+                    gameAssetLoader.loadObject(player.col, player.row,"busy",turn);
+                }
                 break;
+
             case 'd':
-                model.position.x -= 1;
+                player.moveToken(+1,0);
+                if(board[player.row][player.col] == '+'){
+                    gameAssetLoader.loadObject(player.col, player.row,player.value,turn);
+                } else {
+                    gameAssetLoader.loadObject(player.col, player.row,"busy",turn);
+                }
+                //model.position.x -= 1;    // esto estaba antes
                 break;
-            //default:
-            //  break;
+
+            case 'w':
+                player.moveToken(0,-1);
+                if(board[player.row][player.col] == '+'){
+                    gameAssetLoader.loadObject(player.col, player.row,player.value,turn);
+                } else {
+                    gameAssetLoader.loadObject(player.col, player.row,"busy",turn);
+                }
+                //model.position.x += 1;    // esto estaba antes
+                break;
+
+            case 's':
+                player.moveToken(0,+1);
+                if(board[player.row][player.col] == '+'){
+                    gameAssetLoader.loadObject(player.col, player.row,player.value,turn);
+                } else {
+                    gameAssetLoader.loadObject(player.col, player.row,"busy",turn);
+                }
+
+                break;
+
+            case 'r':
+                this.location.reload();
+                break;
+
+            case 'Enter':
+                nextTurnAble = checkTokens();
+                if (nextTurnAble) {
+                    gameAssetLoader.loadObject(player.col, player.row,player.value,turn);
+                    
+                    turn += 1;
+                }/* else {
+                    gameAssetLoader.loadObject(player.col, player.row,"busy",turn);
+                }*/
+                break;
+            
+            case ' ':
+                gameAssetLoader.deleteObject(turn - 1);
+                break;
+
+            case 'm':
+                if (!isMusicPlaying) {
+                    audioPlayer.play();
+                    audioIcon.src = "../assets/img/audio_on.png";
+                    isMusicPlaying = true;
+                } else {
+                    audioPlayer.pause();
+                    audioIcon.src = "../assets/img/audio_paused.png";
+                    isMusicPlaying = false;
+                }
+                break;
+
+            case 'p':
+                if (isMusicPlaying) {
+                    audioPlayer.pause();
+                }
+                audioIcon.src = "../assets/img/audio_init.png";
+                audioPlayer.currentTime = 0;
+                isMusicPlaying = false;
+                
+                break;
+
+            default:
+                break;
         }    
-    }
+    //}
+    chivatoFull();
+
 });
+/* _______________________________________________________________________________________ */
