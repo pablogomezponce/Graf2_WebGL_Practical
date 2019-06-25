@@ -32,12 +32,12 @@ function gameVarsInit() {
     audioPlayer = $("#music")[0];
     
     commandsIcon = document.createElement("img");
-    commandsIcon.src = "../assets/img/commands.png";
+    commandsIcon.src = "./assets/img/commands.png";
     commandsIcon.style = "height:50%;position:absolute;left:25px;top:50px;";
     document.body.appendChild(commandsIcon);
 
     audioIcon = document.createElement("img");
-    audioIcon.src = "../assets/img/audio_init.png";
+    audioIcon.src = "./assets/img/audio_init.png";
     audioIcon.style = "height:15%;position:absolute;right:25px;bottom:50px;";
     document.body.appendChild(audioIcon);
 
