@@ -70,15 +70,15 @@ function render() {
             $("canvas").remove();
             switch (winner) {
                 case '+':
-                    document.body.style.backgroundImage = "url(../assets/Results/draw.png)";
+                    document.body.style.backgroundImage = "url(./assets/Results/draw.png)";
                     
                     break;
                 case 'o':
-                    document.body.style.backgroundImage = "url(../assets/Results/o_wins.png)";
+                    document.body.style.backgroundImage = "url(./assets/Results/o_wins.png)";
 
                     break;
                 case 'x':
-                    document.body.style.backgroundImage = "url(../assets/Results/+_wins.png)";
+                    document.body.style.backgroundImage = "url(./assets/Results/+_wins.png)";
 
                     break;
                 default:
